@@ -16,7 +16,7 @@ namespace CustomConsoleUI
 
     internal class ChoiceForm : IDisposable
     {
-        private string PageDescription;
+        public string PageDescription;
         private PageStyle PageConsole;
         private List<Option> options;
 
@@ -38,6 +38,7 @@ namespace CustomConsoleUI
             this.PageDescription = Description;
         }
 
+        // Default empty action
         public void AddAction()
             => this.options.Add(new Option());
 
@@ -56,7 +57,7 @@ namespace CustomConsoleUI
         public void OverrideOptions(List<Option> OptionsList)
             => OptionsList.CopyTo(this.options.ToArray());
 
-        private void CycleSelection(string description, List<Option> options, ChoicePattern style = ChoicePattern.Rows)
+        private void CycleSelection(string description, List<Option> options, ChoicePattern style)
         {
             // Initialization
             ConsoleKey inputKey;
@@ -121,12 +122,8 @@ namespace CustomConsoleUI
             PageStyle.Revert();       // Revert console style after exit
         }
 
-        public void Start()
-                    => this.CycleSelection(this.PageDescription, this.options);
-
-        public void Start(ChoicePattern pattern)
+        public void Start(ChoicePattern pattern = ChoicePattern.Rows)
             => this.CycleSelection(this.PageDescription, this.options, pattern);
-
 
         public void Dispose()
         {

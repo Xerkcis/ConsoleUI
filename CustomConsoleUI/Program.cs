@@ -22,18 +22,15 @@ namespace CustomConsoleUI
             return ReturnAction.Stay;
         }
 
-        static ReturnAction SubPage1()
+        static void mainpage()
         {
-            using (ChoiceForm subpage1 = new ChoiceForm("Sub_1", "Second floor\nFirst room"))
+            using (ChoiceForm main = new ChoiceForm("Main Page"))
             {
-                subpage1.AddAction("Hello", helloWorld);
-                subpage1.AddAction("Hello", helloWorld);
-                subpage1.AddAction(new Option());
-
-                subpage1.StartPage(ChoicePattern.Columns);
+                main.AddAction("Hello", helloWorld);
+                main.AddAction("Sub_0", SubPage0);
+            
+                main.Start(ChoicePattern.Columns);
             }
-
-            return ReturnAction.Stay;
         }
 
         static ReturnAction SubPage0()
@@ -43,21 +40,24 @@ namespace CustomConsoleUI
                 subpage0.AddAction("Hello", helloWorld);
                 subpage0.AddAction("Sub_1", SubPage1);
 
-                subpage0.StartPage(ChoicePattern.Columns);
+                subpage0.Start(ChoicePattern.Columns);
             }
 
             return ReturnAction.Stay;
         }
 
-        static void mainpage()
+        static ReturnAction SubPage1()
         {
-            using (ChoiceForm main = new ChoiceForm("Main Page"))
+            using (ChoiceForm subpage1 = new ChoiceForm("Sub_1", "Second floor\nFirst room"))
             {
-                main.AddAction("Hello", helloWorld);
-                main.AddAction("Sub_0", SubPage0);
+                subpage1.AddAction("Hello", helloWorld);
+                subpage1.AddAction("Hello", helloWorld);
+                subpage1.AddAction(new Option());
 
-                main.StartPage(ChoicePattern.Columns);
+                subpage1.Start(ChoicePattern.Columns);
             }
+
+            return ReturnAction.Stay;
         }
 
         static void Main(string[] args)

@@ -36,9 +36,9 @@ namespace CustomConsoleUI
 		public static ReturnAction Back()
 		{
 			position = 0;
-			
-			if (depth > 1) return ReturnAction.Break;
-			else return ReturnAction.Exit;
+
+			if (depth == 1) return ReturnAction.Exit;
+			else return ReturnAction.Break;
 		}
 
 		public static bool Cycle(ConsoleKey direction)

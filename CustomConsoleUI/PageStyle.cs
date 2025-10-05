@@ -90,6 +90,9 @@ namespace CustomConsoleUI
 		public static ConsoleKey KeyInput(bool intercept = true)
 			=> Console.ReadKey(intercept).Key;
 
+		public override string ToString()
+			=> $"{this.title}";
+
         public void Dispose()
 			=> Navigation.depth--;
 	}
