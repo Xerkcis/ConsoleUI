@@ -14,14 +14,16 @@ namespace CustomConsoleUI
 		public static int position = 0;
 		private static int indexLimit = 0;
 
-		public static void reset()
+		// Resets navigation 
+		public static void StartNew()
 		{
 			depth++;
 			position = 0;
 			indexLimit = 0;
 		}
-		
-		public static void setLimit(int listCount)
+
+        // Updates navigation attributes
+        public static void UpdateLimit(int listCount)
 		{
 			indexLimit = listCount-1;
 

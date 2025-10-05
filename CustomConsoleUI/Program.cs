@@ -33,7 +33,7 @@ namespace CustomConsoleUI
                     new Option("Sub1", SubPage1)
                 };
 
-                subpage0.RenderOptions(RenderPattern.Columns);
+                subpage0.StartPage(RenderPattern.Columns);
             }
 
             return ReturnAction.Stay;
@@ -50,7 +50,7 @@ namespace CustomConsoleUI
                     new Option()
                 };
 
-                subpage1.RenderOptions(RenderPattern.Columns);
+                subpage1.StartPage(RenderPattern.Columns);
             }
 
             return ReturnAction.Stay;
@@ -68,7 +68,7 @@ namespace CustomConsoleUI
                     new Option("Sub0_2", SubPage0)
                 };
 
-                mainpage.RenderOptions(RenderPattern.Columns);
+                mainpage.StartPage(RenderPattern.Columns);
             }
         }
     }
