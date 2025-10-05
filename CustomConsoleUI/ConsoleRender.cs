@@ -13,12 +13,6 @@ namespace CustomConsoleUI
 		highlight
 	}
 
-	public enum RenderPattern
-	{
-		Rows,
-		Columns
-	}
-
 	internal static class ConsoleRender
 	{
 		// Old cursor position
@@ -45,12 +39,16 @@ namespace CustomConsoleUI
 				Console.WriteLine(new String(' ', Console.WindowWidth - 1));
 		}
 
+        // Captures last column position of console cursor
+        public static void CaptureColumnPosition()
+            => LastColumn = Console.CursorLeft;
+
         // Captures last row position of console cursor
         public static void CaptureRowPosition()
 			=> LastRow = Console.CursorTop;
 
         // Clears from last row position until current
-        public static void ClearFromLastPosition()
+        public static void ClearFromLastRow()
 		{
 			int CurrentRow = Console.CursorTop;
 			SetCursorPosition(0, LastRow);

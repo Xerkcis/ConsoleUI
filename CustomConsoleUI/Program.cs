@@ -22,54 +22,47 @@ namespace CustomConsoleUI
             return ReturnAction.Stay;
         }
 
-        static ReturnAction SubPage0()
+        static ReturnAction SubPage1()
         {
-            using (Page subpage0 = new Page("Sub_0", "Second floor"))
+            using (ChoiceForm subpage1 = new ChoiceForm("Sub_1", "Second floor\nFirst room"))
             {
-                subpage0.options = new List<Option>
-                {
-                    new Option("Hello", helloWorld),
-                    new Option("Hello", helloWorld),
-                    new Option("Sub1", SubPage1)
-                };
+                subpage1.AddAction("Hello", helloWorld);
+                subpage1.AddAction("Hello", helloWorld);
+                subpage1.AddAction(new Option());
 
-                subpage0.StartPage(RenderPattern.Columns);
+                subpage1.StartPage(ChoicePattern.Columns);
             }
 
             return ReturnAction.Stay;
         }
 
-        static ReturnAction SubPage1()
+        static ReturnAction SubPage0()
         {
-            using (Page subpage1 = new Page("Sub_1", "Second floor\nFirst room"))
+            using (ChoiceForm subpage0 = new ChoiceForm("Sub_0", "Second floor"))
             {
-                subpage1.options = new List<Option>
-                {
-                    new Option("Hello", helloWorld),
-                    new Option("Hello", helloWorld),
-                    new Option()
-                };
+                subpage0.AddAction("Hello", helloWorld);
+                subpage0.AddAction("Sub_1", SubPage1);
 
-                subpage1.StartPage(RenderPattern.Columns);
+                subpage0.StartPage(ChoicePattern.Columns);
             }
 
             return ReturnAction.Stay;
+        }
+
+        static void mainpage()
+        {
+            using (ChoiceForm main = new ChoiceForm("Main Page"))
+            {
+                main.AddAction("Hello", helloWorld);
+                main.AddAction("Sub_0", SubPage0);
+
+                main.StartPage(ChoicePattern.Columns);
+            }
         }
 
         static void Main(string[] args)
         {
-            using (Page mainpage = new Page("Test_1", "Hello"))
-            {
-                mainpage.options = new List<Option>
-                {
-                    new Option("Sub0_0", SubPage0),
-                    new Option("Sub0_1", SubPage0),
-                    new Option("Hello", helloWorld),
-                    new Option("Sub0_2", SubPage0)
-                };
-
-                mainpage.StartPage(RenderPattern.Columns);
-            }
+            mainpage();
         }
     }
 }

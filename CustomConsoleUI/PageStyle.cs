@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CustomConsoleUI
 {
-	internal class ConsoleUI : IDisposable
+	internal class PageStyle : IDisposable
 	{
 		// Object fields
 		private readonly string title = "Interface_0";
@@ -22,7 +22,7 @@ namespace CustomConsoleUI
 		private static ConsoleColor LastForeground;
 
 		// Public constructor for general customizability
-		public ConsoleUI(string title, ConsoleColor background, ConsoleColor foreground)
+		public PageStyle(string title, ConsoleColor background, ConsoleColor foreground)
 		{
 			LastTitle = Console.Title;
 			LastBackground = Console.BackgroundColor;
@@ -37,7 +37,7 @@ namespace CustomConsoleUI
 
 		// Private constructor for color customizability only
 		// Used for the (take-only-title) constructors
-		private ConsoleUI(ConsoleColor background, ConsoleColor foreground)
+		private PageStyle(ConsoleColor background, ConsoleColor foreground)
 		{
 			LastBackground = Console.BackgroundColor;
 			LastForeground = Console.ForegroundColor;
@@ -47,7 +47,7 @@ namespace CustomConsoleUI
 
 		// Constructor that takes a title and assigns it to the object
 		// Last given console title is stored
-		public ConsoleUI(string title) : this(Console.BackgroundColor, Console.ForegroundColor)
+		public PageStyle(string title) : this(Console.BackgroundColor, Console.ForegroundColor)
 		{
 			LastTitle = Console.Title;
 			this.title = title;
@@ -57,7 +57,7 @@ namespace CustomConsoleUI
 
 		// Constructor that stores last given title
 		// The title is given to the new object
-		public ConsoleUI() : this(Console.BackgroundColor, Console.ForegroundColor)
+		public PageStyle() : this(Console.BackgroundColor, Console.ForegroundColor)
 		{
 			LastTitle = Console.Title;
 			this.title = LastTitle;

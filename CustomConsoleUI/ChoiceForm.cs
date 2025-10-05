@@ -6,53 +6,74 @@ using System.Threading.Tasks;
 
 namespace CustomConsoleUI
 {
-    internal delegate void RenderDelegate<T>(List<T> options);
+    internal delegate void RenderDelegate<T>(List<T> lines);
 
-    internal class Page : IDisposable
+    public enum ChoicePattern
     {
-        public string PageDescription;
-        public ConsoleUI PageConsole;
-        public List<Option> options;
+        Rows,
+        Columns
+    }
 
-        private Page()
+    internal class ChoiceForm : IDisposable
+    {
+        private string PageDescription;
+        private PageStyle PageConsole;
+        private List<Option> options;
+
+        private ChoiceForm()
         {
-            this.PageConsole = new ConsoleUI("Page " + $"{Navigation.depth}");
-            this.options = new List<Option>()
-            {
-                new Option()
-            };
+            this.PageConsole = new PageStyle("Page " + $"{Navigation.depth}");
+            this.options = new List<Option>();
         }
 
-        public Page(string Title, string Description) : this()
+        public ChoiceForm(string Title, string Description) : this()
         {
-            this.PageConsole = new ConsoleUI(Title);
+            this.PageConsole = new PageStyle(Title);
             this.PageDescription = Description;
         }
 
-        public Page(string Description) : this()
+        public ChoiceForm(string Description) : this()
         {
-            this.PageConsole = new ConsoleUI();
+            this.PageConsole = new PageStyle();
             this.PageDescription = Description;
         }
 
-        private void CycleSelection(string description, List<Option> options, RenderPattern style = RenderPattern.Rows)
+        public void AddAction()
+            => this.options.Add(new Option());
+
+        public void AddAction(string DisplayName, OptionDelegate ActionDelegate)
+            => this.options.Add(new Option(DisplayName, ActionDelegate));
+
+        public void AddAction(Option option)
+            => this.options.Add(option);
+
+        public void AddAction(List<Option> options)
+            => options.ForEach(option => this.options.Add(option));
+
+        public List<Option> GetOptions()
+            => this.options;
+
+        public void OverrideOptions(List<Option> OptionsList)
+            => OptionsList.CopyTo(this.options.ToArray());
+
+        private void CycleSelection(string description, List<Option> options, ChoicePattern style = ChoicePattern.Rows)
         {
             // Initialization
             ConsoleKey inputKey;
             OptionDelegate runAction;
-            RenderDelegate<Option> renderManager
-                = delegate { throw new Exception("Cycle terminated at startup"); };
+            RenderDelegate<Option> renderManager = delegate { throw new Exception("Cycle terminated at startup"); };
             ReturnAction returnAction;
 
             // Resetting position to zero
             Navigation.StartNew();
 
+            // One-time assignment of delegate
             switch(style)
             {
-                case RenderPattern.Rows:
+                case ChoicePattern.Rows:
                     renderManager = ConsoleRender.RenderOptionsRows;
                     break;
-                case RenderPattern.Columns:
+                case ChoicePattern.Columns:
                     renderManager = ConsoleRender.RenderOptionsCols;
                     break;
             }
@@ -66,7 +87,7 @@ namespace CustomConsoleUI
                 // Rendering block
                 ConsoleRender.ClearInterface();
                 ConsoleRender.SetCursorPosition(0, 0);
-            
+                
                 ConsoleRender.WriteLine(description + $"\nDepth: {Navigation.depth}");
                 renderManager(options);
 
@@ -77,7 +98,7 @@ namespace CustomConsoleUI
                 // Defaulting action to skip
                 // Getting key input from user
                 runAction = Navigation.Stay;
-                inputKey = ConsoleUI.KeyInput();
+                inputKey = PageStyle.KeyInput();
 
                 // Key decision making
                 if (inputKey == ConsoleKey.Enter) runAction = options[Navigation.position].optionDel;
@@ -94,16 +115,16 @@ namespace CustomConsoleUI
                 else if (returnAction == ReturnAction.Throw) Option.ThrowException(); // For any errors
 
                 // Final Drawing
-                ConsoleRender.ClearFromLastPosition();
+                ConsoleRender.ClearFromLastRow();
             }
 
-            ConsoleUI.Revert();       // Revert console style after exit
+            PageStyle.Revert();       // Revert console style after exit
         }
 
-        public void StartPage()
+        public void Start()
                     => this.CycleSelection(this.PageDescription, this.options);
 
-        public void StartPage(RenderPattern pattern)
+        public void Start(ChoicePattern pattern)
             => this.CycleSelection(this.PageDescription, this.options, pattern);
 
 
