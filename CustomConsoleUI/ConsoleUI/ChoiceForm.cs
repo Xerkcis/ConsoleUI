@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CustomConsoleUI
+namespace CustomConsoleUI.ConsoleUI
 {
+	// For render style
 	internal delegate void RenderDelegate<T>(List<T> lines);
 
 	public enum ChoicePattern

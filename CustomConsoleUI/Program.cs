@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CustomConsoleUI.ConsoleUI;
 
 namespace CustomConsoleUI
 {
     internal class Program
     {
-        static void endOfAction()
+		#region "Reusable Static Functions"
+		static void endOfAction()
         {
             Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
@@ -22,7 +24,10 @@ namespace CustomConsoleUI
             return ReturnAction.Stay;
         }
 
-        static void mainpage()
+		#endregion
+
+		#region "Pages and subpages"
+		static void mainpage()
         {
             using (ChoiceForm main = new ChoiceForm("Main Page"))
             {
@@ -59,9 +64,11 @@ namespace CustomConsoleUI
 
             return ReturnAction.Stay;
         }
+		#endregion
 
-        static void Main(string[] args)
+		static void Main(string[] args)
         {
+            // Autostart from main page function
             mainpage();
         }
     }

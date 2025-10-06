@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace CustomConsoleUI
+namespace CustomConsoleUI.ConsoleUI
 {
 	internal class PageStyle : IDisposable
 	{

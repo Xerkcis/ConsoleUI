@@ -6,7 +6,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CustomConsoleUI
+namespace CustomConsoleUI.ConsoleUI
 {
 	internal static class Navigation
 	{
