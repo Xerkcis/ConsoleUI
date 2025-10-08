@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CustomConsoleUI.ConsoleUI
 {
-	internal class PageStyle : IDisposable
+	internal class PageManager : IDisposable
 	{
 		// Object fields
 		private readonly string title = "Interface_0";
@@ -22,7 +22,7 @@ namespace CustomConsoleUI.ConsoleUI
 		private static ConsoleColor LastForeground;
 
 		// Public constructor for general customizability
-		public PageStyle(string title, ConsoleColor background, ConsoleColor foreground)
+		public PageManager(string title, ConsoleColor background, ConsoleColor foreground)
 		{
 			LastTitle = Console.Title;
 			LastBackground = Console.BackgroundColor;
@@ -37,7 +37,7 @@ namespace CustomConsoleUI.ConsoleUI
 
 		// Private constructor for color customizability only
 		// Used for the (take-only-title) constructors
-		private PageStyle(ConsoleColor background, ConsoleColor foreground)
+		private PageManager(ConsoleColor background, ConsoleColor foreground)
 		{
 			LastBackground = Console.BackgroundColor;
 			LastForeground = Console.ForegroundColor;
@@ -47,7 +47,7 @@ namespace CustomConsoleUI.ConsoleUI
 
 		// Constructor that takes a title and assigns it to the object
 		// Last given console title is stored
-		public PageStyle(string title) : this(Console.BackgroundColor, Console.ForegroundColor)
+		public PageManager(string title) : this(Console.BackgroundColor, Console.ForegroundColor)
 		{
 			LastTitle = Console.Title;
 			this.title = title;
@@ -57,7 +57,7 @@ namespace CustomConsoleUI.ConsoleUI
 
 		// Constructor that stores last given title
 		// The title is given to the new object
-		public PageStyle() : this(Console.BackgroundColor, Console.ForegroundColor)
+		public PageManager() : this(Console.BackgroundColor, Console.ForegroundColor)
 		{
 			LastTitle = Console.Title;
 			this.title = LastTitle;
@@ -82,6 +82,15 @@ namespace CustomConsoleUI.ConsoleUI
             Console.ForegroundColor = LastForeground;
         }
 
+		#region "Cursor Visibility Control"
+		public static void CursorOff()
+			=> Console.CursorVisible = (Console.CursorVisible) ? false : Console.CursorVisible;
+
+		public static void CursorOn()
+			=> Console.CursorVisible = (!Console.CursorVisible) ? true : Console.CursorVisible;
+		#endregion
+
+		#region "User Input Handling"
 		/// <summary>
 		/// Waits for any key press
 		/// </summary>
@@ -89,6 +98,53 @@ namespace CustomConsoleUI.ConsoleUI
 		/// <returns>Returns a <b>ConsoleKeyInfo</b> object</returns>
 		public static ConsoleKey KeyInput(bool intercept = true)
 			=> Console.ReadKey(intercept).Key;
+
+		private static T ReadInput<T>() where T : IConvertible
+			=> (T)Convert.ChangeType(Console.ReadLine(), typeof(T));
+
+		// Returns user input
+		// Prints text at the beginning
+		public static T Read<T>(string text) where T : IConvertible
+		{
+			T val;
+			ConsoleRender.Write(text);
+			CursorOn();
+
+			val = ReadInput<T>();
+			CursorOff();
+
+			return val;
+		}
+
+		// Returns user input
+		public static T Read<T>() where T : IConvertible
+		{
+			T val;
+			CursorOn();
+			val = ReadInput<T>();
+
+			CursorOff();
+			return val;
+		}
+
+		// Stores user input into reference
+		// Prints text at the beginning
+		public static void Read<T>(ref T val, string text) where T : IConvertible
+		{
+			ConsoleRender.Write(text);
+			CursorOn();
+			val = ReadInput<T>();
+			CursorOff();
+		}
+
+		// Stores user input into reference
+		public static void Read<T>(ref T val) where T : IConvertible
+		{
+			CursorOn();
+			val = ReadInput<T>();
+			CursorOff();
+		}
+		#endregion
 
 		public override string ToString()
 			=> $"{this.title}";

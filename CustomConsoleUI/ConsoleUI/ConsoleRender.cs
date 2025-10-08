@@ -36,7 +36,7 @@ namespace CustomConsoleUI.ConsoleUI
 			SetCursorPosition(0, 0);
 
 			for (int i = 0; i < LastRow; i++)
-				Console.WriteLine(new String(' ', Console.WindowWidth - 1));
+				Console.WriteLine(new string(' ', Console.WindowWidth - 1));
 		}
 
         // Captures last column position of console cursor
@@ -125,7 +125,7 @@ namespace CustomConsoleUI.ConsoleUI
         {
             for (int i = 0; i < options.Count; i++)
             {
-                if (Navigation.position == i) ConsoleRender.Write(options[i], RenderMode.highlight);
+                if (Navigation.position == i) Write(options[i], RenderMode.highlight);
                 else Write(options[i]);
                 if (i != options.Count - 1) Write(" || ");
                 else WriteLine();

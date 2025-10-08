@@ -18,24 +18,24 @@ namespace CustomConsoleUI.ConsoleUI
 	internal class ChoiceForm : IDisposable
 	{
 		public string PageDescription;
-		private PageStyle PageConsole;
+		private PageManager PageConsole;
 		private List<Option> options;
 
 		private ChoiceForm()
 		{
-			this.PageConsole = new PageStyle("Page " + $"{Navigation.depth}");
+			this.PageConsole = new PageManager("Page " + $"{Navigation.depth}");
 			this.options = new List<Option>();
 		}
 
 		public ChoiceForm(string Title, string Description) : this()
 		{
-			this.PageConsole = new PageStyle(Title);
+			this.PageConsole = new PageManager(Title);
 			this.PageDescription = Description;
 		}
 
 		public ChoiceForm(string Description) : this()
 		{
-			this.PageConsole = new PageStyle();
+			this.PageConsole = new PageManager();
 			this.PageDescription = Description;
 		}
 
@@ -105,7 +105,7 @@ namespace CustomConsoleUI.ConsoleUI
 				// Defaulting action to skip
 				// Getting key input from user
 				runAction = Navigation.Stay;
-				inputKey = PageStyle.KeyInput();
+				inputKey = PageManager.KeyInput();
 
 				// Key decision making
 				if (inputKey == ConsoleKey.Enter) runAction = options[Navigation.position].optionDel;
@@ -125,7 +125,7 @@ namespace CustomConsoleUI.ConsoleUI
 				ConsoleRender.ClearFromLastRow();
 			}
 
-			PageStyle.Revert();       // Revert console style after exit
+			PageManager.Revert();       // Revert console style after exit
 		}
 
 		public void Start(ChoicePattern pattern = ChoicePattern.Rows)

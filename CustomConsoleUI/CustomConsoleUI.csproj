@@ -48,7 +48,7 @@
     <Compile Include="ConsoleUI\ChoiceForm.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ConsoleUI\PageStyle.cs" />
+    <Compile Include="ConsoleUI\PageManager.cs" />
     <Compile Include="ConsoleUI\ConsoleRender.cs" />
   </ItemGroup>
   <ItemGroup>
