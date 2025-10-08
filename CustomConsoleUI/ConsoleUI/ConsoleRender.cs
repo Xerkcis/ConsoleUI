@@ -50,7 +50,7 @@ namespace CustomConsoleUI.ConsoleUI
         // Clears from last row position until current
         public static void ClearFromLastRow()
 		{
-			int CurrentRow = Console.CursorTop;
+            int CurrentRow = Console.CursorTop + 1;
 			SetCursorPosition(0, LastRow);
 
 			for (int i = LastRow; i < CurrentRow; i++)
