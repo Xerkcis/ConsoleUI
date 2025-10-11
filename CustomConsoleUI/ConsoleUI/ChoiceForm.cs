@@ -18,24 +18,24 @@ namespace CustomConsoleUI.ConsoleUI
 	internal class ChoiceForm : IDisposable
 	{
 		public string PageDescription;
-		private PageManager PageConsole;
+		private PageManager Page;
 		private List<Option> options;
 
 		private ChoiceForm()
 		{
-			this.PageConsole = new PageManager("Page " + $"{Navigation.depth}");
+			this.Page = new PageManager($"Page {Navigation.depth}");
 			this.options = new List<Option>();
 		}
 
 		public ChoiceForm(string Title, string Description) : this()
 		{
-			this.PageConsole = new PageManager(Title);
+			this.Page = new PageManager(Title);
 			this.PageDescription = Description;
 		}
 
 		public ChoiceForm(string Description) : this()
 		{
-			this.PageConsole = new PageManager();
+			this.Page = new PageManager($"Page {Navigation.depth}");
 			this.PageDescription = Description;
 		}
 
@@ -134,8 +134,8 @@ namespace CustomConsoleUI.ConsoleUI
 		public void Dispose()
 		{
 			this.PageDescription = null;
-			this.PageConsole.Dispose();
-			this.PageConsole = null;
+			this.Page.Dispose();
+			this.Page = null;
 			this.options.Clear();
 			this.options = null;
 		}

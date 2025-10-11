@@ -16,6 +16,17 @@ namespace CustomConsoleUI
             Console.ReadKey();
         }
 
+        static ReturnAction PrintForever()
+        {
+            for (int i = 0; i < Console.WindowHeight-1; i++)
+            {
+                Console.WriteLine(new string('-', Console.WindowWidth-1));
+            }
+
+            endOfAction();
+            return ReturnAction.Stay;
+        }
+
         static ReturnAction helloWorld()
         {
             Console.WriteLine("Hello, World!");
@@ -57,7 +68,7 @@ namespace CustomConsoleUI
             {
                 subpage1.AddAction("Hello", helloWorld);
                 subpage1.AddAction("Hello", helloWorld);
-                subpage1.AddAction(new Option());
+                subpage1.AddAction("Test", PrintForever);
 
                 subpage1.Start(ChoicePattern.Columns);
             }
@@ -68,8 +79,31 @@ namespace CustomConsoleUI
 
 		static void Main(string[] args)
         {
-            // Autostart from main page function
-            mainpage();
+            SearchQuery0();
+		}
+
+        static void SearchQuery0()
+        {
+            SearchForm form1 = new SearchForm("Test Search 1", "First Floor");
+
+            form1.AddQuery(
+                new List<string>
+                {
+                    "Omar",
+                    "Mohamed",
+                    "Ahmed",
+                    "Jasmine",
+                    "Tina",
+                    "Maxin",
+                    "Svetlana",
+                    "Olga",
+                    "Oregano",
+                    "Michael",
+                    "Marvin",
+                    "Vladimir"
+                });
+
+            form1.Start();
         }
     }
 }
