@@ -80,7 +80,8 @@ namespace CustomConsoleUI.ConsoleUI
 						UserInput += " ";
 						break;
 					case ConsoleKey.Enter:
-						retAction = queryAction(FilteredStrings[Navigation.position]);
+						if (FilteredStrings.Any())
+							retAction = queryAction(FilteredStrings[Navigation.position]);
 						break;
 					case ConsoleKey.Backspace:
 						if (!UserInput.Any()) retAction = ReturnAction.Break;
