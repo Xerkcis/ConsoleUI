@@ -107,24 +107,41 @@ namespace CustomConsoleUI.ConsoleUI
 				runAction = Navigation.Stay;
 				inputKey = PageManager.KeyInput();
 
-				// Key decision making
-				if (inputKey == ConsoleKey.Enter) runAction = options[Navigation.position].optionDel;
-				else if ((inputKey == ConsoleKey.Backspace)) runAction = Navigation.Back;
-				else Navigation.Cycle(inputKey);
+				switch (inputKey)
+				{
+					case ConsoleKey.Enter:
+						runAction = options[Navigation.position].optionDel;
+						break;
+					case ConsoleKey.Backspace:
+						runAction = Navigation.Back;
+						break;
+					default:
+						Navigation.Cycle(inputKey);
+						break;
+				}
 
 				// May cause runtime issue
 				// Developer must add a way to escape loops
 				returnAction = runAction();
 
-				// Extra layer of control
-				if (returnAction == ReturnAction.Exit) Option.exit();
-				else if (returnAction == ReturnAction.Break) break;
-				else if (returnAction == ReturnAction.Throw) Option.ThrowException(); // For any errors
+				switch (returnAction)
+				{
+					case ReturnAction.Exit:
+						Option.exit();
+						break;
+					case ReturnAction.Throw:
+						Option.ThrowException();
+						break;
+					case ReturnAction.Break:
+						goto Breakout;
+				}
 
 				// Final Drawing
 				ConsoleRender.ClearFromLastRow();
 			}
 
+			Breakout:
+			Navigation.Reset();
 			PageManager.Revert();       // Revert console style after exit
 		}
 

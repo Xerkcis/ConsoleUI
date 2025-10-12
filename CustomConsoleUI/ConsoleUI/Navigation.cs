@@ -22,6 +22,12 @@ namespace CustomConsoleUI.ConsoleUI
 			indexLimit = 0;
 		}
 
+		public static void Reset()
+		{
+			position = 0;
+			indexLimit = 0;
+		}
+
         // Updates navigation attributes
         public static void UpdateLimit(int listCount)
 		{

@@ -68,7 +68,7 @@ namespace CustomConsoleUI
             {
                 subpage1.AddAction("Hello", helloWorld);
                 subpage1.AddAction("Hello", helloWorld);
-                subpage1.AddAction("Test", PrintForever);
+                subpage1.AddAction("Test", SearchQuery0);
 
                 subpage1.Start(ChoicePattern.Columns);
             }
@@ -79,31 +79,50 @@ namespace CustomConsoleUI
 
 		static void Main(string[] args)
         {
-            SearchQuery0();
+            mainpage();
 		}
 
-        static void SearchQuery0()
+        static ReturnAction queryAction(string test)
         {
-            SearchForm form1 = new SearchForm("Test Search 1", "First Floor");
+            Console.Clear();
+            Console.WriteLine(test);
+            endOfAction();
 
-            form1.AddQuery(
-                new List<string>
-                {
-                    "Omar",
-                    "Mohamed",
-                    "Ahmed",
-                    "Jasmine",
-                    "Tina",
-                    "Maxin",
-                    "Svetlana",
-                    "Olga",
-                    "Oregano",
-                    "Michael",
-                    "Marvin",
-                    "Vladimir"
-                });
+            return ReturnAction.Stay;
+        }
 
-            form1.Start();
+        static ReturnAction SearchQuery0()
+        {
+            using (SearchForm<string> form1 = new SearchForm<string>("Test Search 1", "First Floor"))
+            {
+				form1.action = delegate (string selected) {
+                    Console.Clear();
+                    Console.WriteLine(selected);
+                    endOfAction();
+
+                    return ReturnAction.Stay;
+                };
+				form1.AddQuery(
+					new List<string>
+					{
+					"Omar",
+					"Mohamed",
+					"Ahmed",
+					"Jasmine",
+					"Tina",
+					"Maxin",
+					"Svetlana",
+					"Olga",
+					"Oregano",
+					"Michael",
+					"Marvin",
+					"Vladimir"
+					});
+
+				form1.Start();
+			}
+
+            return ReturnAction.Stay;
         }
     }
 }

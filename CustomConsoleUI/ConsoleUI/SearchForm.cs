@@ -6,18 +6,19 @@ using System.Threading.Tasks;
 
 namespace CustomConsoleUI.ConsoleUI
 {
-	public delegate void EntityRenderDelegate<T>(List<T> lines);
+	public delegate ReturnAction QueryAction<T>(T query);
 
-	internal class SearchForm
+	internal class SearchForm<T> : IDisposable
 	{
 		public string PageDescription;
 		private PageManager Page;
-		private List<string> Queries;
+		private List<T> Queries;
+		public QueryAction<T> action;
 
 		private SearchForm()
 		{
 			this.Page = new PageManager($"Page {Navigation.depth}");
-			this.Queries = new List<string>();
+			this.Queries = new List<T>();
 		}
 
 		public SearchForm(string Title, string Description) : this()
@@ -32,22 +33,23 @@ namespace CustomConsoleUI.ConsoleUI
 			this.PageDescription = Description;
 		}
 
-		public void AddQuery(string item)
+		public void AddQuery(T item)
 			=> this.Queries.Add(item);
 
-		public void AddQuery(List<string> items)
+		public void AddQuery(List<T> items)
 			=> this.Queries.AddRange(items);
 		
 		// INCOMPLETE
 		// FUNCTIONALITY OF THIS CLASS IS UNSTABLE
-		private void SearchQuery(string Description, List<string> strings)
+		private void SearchQuery(string Description, List<T> queries, QueryAction<T> queryAction)
 		{
 			ConsoleKey InputKey;
+			ReturnAction retAction = ReturnAction.Stay;
 			Navigation.StartNew();
-			string SelectedQuery = strings.First();
+			T SelectedQuery = queries.First();
 
-			string UserInputConcat = "";
-			List<string> FilteredStrings = new List<string>();
+			string UserInput = "";
+			List<T> FilteredStrings = new List<T>();
 
 			while (true)
 			{
@@ -56,32 +58,68 @@ namespace CustomConsoleUI.ConsoleUI
 
 				ConsoleRender.WriteLine(Description + $"\nDepth: {Navigation.depth}");
 				ConsoleRender.Write("Query: ");
-				ConsoleRender.Write(UserInputConcat + "\n", RenderMode.highlight);
+				ConsoleRender.Write(UserInput + "\n", RenderMode.highlight);
 
 				ConsoleRender.CaptureRowPosition();
 
-				FilteredStrings = strings.FindAll(element => element.ToLower().Contains(UserInputConcat));
+				FilteredStrings = queries.FindAll(
+					element => element.ToString().ToLower().Contains(UserInput)
+					);
 				Navigation.UpdateLimit(FilteredStrings.Count);
-				Console.WriteLine(Navigation.position);
-				Console.WriteLine(SelectedQuery);
-
+				
 				Console.WriteLine();
 				ConsoleRender.RenderOptionsRows(FilteredStrings);
 
 				InputKey = PageManager.KeyInput(true);
-				if (InputKey.ToString().Length == 1) UserInputConcat += InputKey;
-				else if (InputKey == ConsoleKey.Spacebar) UserInputConcat += " ";
-				else if (InputKey == ConsoleKey.Enter) SelectedQuery = FilteredStrings[Navigation.position];
-				else if ((InputKey == ConsoleKey.Backspace) && UserInputConcat.Any())
-					UserInputConcat = UserInputConcat.Remove(UserInputConcat.Length - 1);
+				if (InputKey.ToString().Length == 1) UserInput += InputKey;
 				else Navigation.Cycle(InputKey);
-				UserInputConcat = UserInputConcat.ToLower();
+
+				switch (InputKey)
+				{
+					case ConsoleKey.Spacebar:
+						UserInput += " ";
+						break;
+					case ConsoleKey.Enter:
+						retAction = queryAction(FilteredStrings[Navigation.position]);
+						break;
+					case ConsoleKey.Backspace:
+						if (!UserInput.Any()) retAction = ReturnAction.Break;
+						else UserInput = UserInput.Remove(UserInput.Length - 1);
+						break;
+				}
+
+				UserInput = UserInput.ToLower();
+
+				switch (retAction)
+				{
+					case ReturnAction.Exit:
+						Option.exit();
+						break;
+					case ReturnAction.Throw:
+						Option.ThrowException();
+						break;
+					case ReturnAction.Break:
+						goto Breakout;
+				}
 
 				ConsoleRender.ClearFromLastRow();
 			}
+
+			Breakout:
+			Navigation.Reset();
+			PageManager.Revert();
 		}
 
 		public void Start()
-			=> this.SearchQuery(this.PageDescription, this.Queries);
+			=> this.SearchQuery(this.PageDescription, this.Queries, this.action);
+
+		public void Dispose()
+		{
+			this.PageDescription = null;
+			this.Page.Dispose();
+			this.Queries.Clear();
+			this.Queries = null;
+			this.action = null;
+		}
 	}
 }
