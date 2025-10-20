@@ -20,6 +20,7 @@ namespace CustomConsoleUI.ConsoleUI
 		public string PageDescription;
 		private PageManager Page;
 		private List<Option> options;
+		private ChoicePattern renderMode;
 
 		private ChoiceForm()
 		{
@@ -38,6 +39,12 @@ namespace CustomConsoleUI.ConsoleUI
 			this.Page = new PageManager($"Page {Navigation.depth}");
 			this.PageDescription = Description;
 		}
+
+		public void Rows()
+			=> this.renderMode = ChoicePattern.Rows;
+
+		public void Columns()
+			=> this.renderMode = ChoicePattern.Columns;
 
 		// Default empty action
 		public void AddAction()
@@ -66,7 +73,7 @@ namespace CustomConsoleUI.ConsoleUI
 		private void CycleSelection(string description, List<Option> options, ChoicePattern style)
 		{
 			// Initialization
-			ConsoleKey inputKey;
+			ConsoleKey KeyInput;
 			OptionDelegate runAction;
 			RenderDelegate<Option> renderManager = delegate { throw new Exception("Cycle terminated at startup"); };
 			ReturnAction returnAction;
@@ -92,8 +99,7 @@ namespace CustomConsoleUI.ConsoleUI
 				Navigation.UpdateLimit(options.Count);
 
 				// Rendering block
-				ConsoleRender.ClearInterface();
-				ConsoleRender.SetCursorPosition(0, 0);
+				ConsoleRender.ClearAll();
 				
 				ConsoleRender.WriteLine(description + $"\nDepth: {Navigation.depth}");
 				renderManager(options);
@@ -105,9 +111,9 @@ namespace CustomConsoleUI.ConsoleUI
 				// Defaulting action to skip
 				// Getting key input from user
 				runAction = Navigation.Stay;
-				inputKey = PageManager.KeyInput();
+				KeyInput = PageManager.KeyInput().Key;
 
-				switch (inputKey)
+				switch (KeyInput)
 				{
 					case ConsoleKey.Enter:
 						runAction = options[Navigation.position].optionDel;
@@ -116,7 +122,7 @@ namespace CustomConsoleUI.ConsoleUI
 						runAction = Navigation.Back;
 						break;
 					default:
-						Navigation.Cycle(inputKey);
+						Navigation.Cycle(KeyInput);
 						break;
 				}
 
@@ -150,6 +156,7 @@ namespace CustomConsoleUI.ConsoleUI
 
 		public void Dispose()
 		{
+			this.Start(this.renderMode);
 			this.PageDescription = null;
 			this.Page.Dispose();
 			this.Page = null;

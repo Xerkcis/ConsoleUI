@@ -43,18 +43,17 @@ namespace CustomConsoleUI.ConsoleUI
 		// FUNCTIONALITY OF THIS CLASS IS UNSTABLE
 		private void SearchQuery(string Description, List<T> queries, QueryAction<T> queryAction)
 		{
-			ConsoleKey InputKey;
+			ConsoleKeyInfo KeyInfo;
 			ReturnAction retAction = ReturnAction.Stay;
 			Navigation.StartNew();
-			T SelectedQuery = queries.First();
+			T SelectedQuery = queries.FirstOrDefault();
 
 			string UserInput = "";
 			List<T> FilteredStrings = new List<T>();
 
 			while (true)
 			{
-				ConsoleRender.ClearInterface();
-				ConsoleRender.SetCursorPosition(0, 0);
+				ConsoleRender.ClearAll();
 
 				ConsoleRender.WriteLine(Description + $"\nDepth: {Navigation.depth}");
 				ConsoleRender.Write("Query: ");
@@ -70,11 +69,12 @@ namespace CustomConsoleUI.ConsoleUI
 				Console.WriteLine();
 				ConsoleRender.RenderOptionsRows(FilteredStrings);
 
-				InputKey = PageManager.KeyInput(true);
-				if (InputKey.ToString().Length == 1) UserInput += InputKey;
-				else Navigation.Cycle(InputKey);
+				KeyInfo = PageManager.KeyInput(true);
+				if (PageManager.IsPrintableKey(KeyInfo.Key))
+					UserInput += KeyInfo.KeyChar.ToString();
+				else Navigation.Cycle(KeyInfo.Key);
 
-				switch (InputKey)
+				switch (KeyInfo.Key)
 				{
 					case ConsoleKey.Spacebar:
 						UserInput += " ";
@@ -88,8 +88,6 @@ namespace CustomConsoleUI.ConsoleUI
 						else UserInput = UserInput.Remove(UserInput.Length - 1);
 						break;
 				}
-
-				UserInput = UserInput.ToLower();
 
 				switch (retAction)
 				{
@@ -116,6 +114,7 @@ namespace CustomConsoleUI.ConsoleUI
 
 		public void Dispose()
 		{
+			this.Start();
 			this.PageDescription = null;
 			this.Page.Dispose();
 			this.Queries.Clear();

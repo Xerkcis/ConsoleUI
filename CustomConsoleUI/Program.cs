@@ -44,8 +44,6 @@ namespace CustomConsoleUI
             {
                 main.AddAction("Hello", helloWorld);
                 main.AddAction("Sub_0", SubPage0);
-            
-                main.Start(ChoicePattern.Columns);
             }
         }
 
@@ -55,8 +53,6 @@ namespace CustomConsoleUI
             {
                 subpage0.AddAction("Hello", helloWorld);
                 subpage0.AddAction("Sub_1", SubPage1);
-
-                subpage0.Start(ChoicePattern.Columns);
             }
 
             return ReturnAction.Stay;
@@ -69,8 +65,6 @@ namespace CustomConsoleUI
                 subpage1.AddAction("Hello", helloWorld);
                 subpage1.AddAction("Hello", helloWorld);
                 subpage1.AddAction("Test", SearchQuery0);
-
-                subpage1.Start(ChoicePattern.Columns);
             }
 
             return ReturnAction.Stay;
@@ -80,7 +74,7 @@ namespace CustomConsoleUI
 		static void Main(string[] args)
         {
             mainpage();
-		}
+        }
 
         static ReturnAction queryAction(string test)
         {
@@ -105,21 +99,19 @@ namespace CustomConsoleUI
 				form1.AddQuery(
 					new List<string>
 					{
-					"Omar",
-					"Mohamed",
-					"Ahmed",
-					"Jasmine",
-					"Tina",
-					"Maxin",
-					"Svetlana",
-					"Olga",
-					"Oregano",
-					"Michael",
-					"Marvin",
-					"Vladimir"
+					"0Omar",
+					"1Mohamed",
+					"2Ahmed",
+					"3Jasmine",
+					"4Tina",
+					"5Maxin",
+					"6Svetlana",
+					"7Olga",
+					"8Oregano",
+					"9Michael",
+					"10Marvin",
+					"11Vladimir"
 					});
-
-				form1.Start();
 			}
 
             return ReturnAction.Stay;

@@ -11,6 +11,9 @@ namespace CustomConsoleUI.ConsoleUI
 {
 	internal class PageManager : IDisposable
 	{
+		// HashSet for printable keys
+		private static readonly HashSet<ConsoleKey> PrintableKeys = new HashSet<ConsoleKey>();
+
 		// Object fields
 		private readonly string title = "Interface_0";
 		private readonly ConsoleColor specialBackground;
@@ -20,6 +23,17 @@ namespace CustomConsoleUI.ConsoleUI
 		private static string LastTitle;
 		private static ConsoleColor LastBackground;
 		private static ConsoleColor LastForeground;
+
+		// Static Constructor
+		static PageManager()
+		{
+			for (ConsoleKey key = ConsoleKey.D0; key <= ConsoleKey.Z; key++)
+				PrintableKeys.Add(key);
+			for (ConsoleKey key = ConsoleKey.NumPad0; key <= ConsoleKey.Divide; key++)
+				PrintableKeys.Add(key);
+			for (ConsoleKey key = ConsoleKey.Oem1; key <= ConsoleKey.Oem102; key++)
+				PrintableKeys.Add(key);
+		}
 
 		// Public constructor for general customizability
 		public PageManager(string title, ConsoleColor background, ConsoleColor foreground)
@@ -96,8 +110,11 @@ namespace CustomConsoleUI.ConsoleUI
 		/// </summary>
 		/// <param name="intercept"></param>
 		/// <returns>Returns a <b>ConsoleKeyInfo</b> object</returns>
-		public static ConsoleKey KeyInput(bool intercept = true)
-			=> Console.ReadKey(intercept).Key;
+		public static ConsoleKeyInfo KeyInput(bool intercept = true)
+			=> Console.ReadKey(intercept);
+
+		public static bool IsPrintableKey(ConsoleKey key)
+			=> PrintableKeys.Contains(key);
 
 		private static T ReadInput<T>() where T : IConvertible
 			=> (T)Convert.ChangeType(Console.ReadLine(), typeof(T));

@@ -30,13 +30,19 @@ namespace CustomConsoleUI.ConsoleUI
             inverted = !inverted;
         }
 
-        public static void ClearInterface()
+		public static void ClearAll()
+		{
+			ClearInterface();
+			SetCursorPosition(0, 0);
+		}
+
+		public static void ClearInterface()
 		{
 			CaptureRowPosition();
 			SetCursorPosition(0, 0);
 
 			for (int i = 0; i < LastRow; i++)
-				Console.WriteLine(new string(' ', Console.WindowWidth - 1));
+				Console.WriteLine(new string(' ', Console.LargestWindowWidth-1));
 		}
 
         // Captures last column position of console cursor
