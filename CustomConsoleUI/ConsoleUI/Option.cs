@@ -16,9 +16,9 @@ namespace CustomConsoleUI.ConsoleUI
         Throw
     }
 
-    internal delegate ReturnAction OptionDelegate();
+    public delegate ReturnAction OptionDelegate();
 
-    internal class Option
+    public class Option
     {
         private string name;
         public OptionDelegate optionDel;

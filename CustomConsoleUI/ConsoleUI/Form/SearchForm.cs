@@ -8,7 +8,7 @@ namespace CustomConsoleUI.ConsoleUI.Form
 {
 	public delegate ReturnAction QueryAction<T>(T query);
 
-	internal class SearchForm<T> : IDisposable
+	public class SearchForm<T> : IDisposable
 	{
 		public string PageDescription;
 		private PageManager Page;

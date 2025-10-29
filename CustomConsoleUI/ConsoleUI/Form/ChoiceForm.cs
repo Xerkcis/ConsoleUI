@@ -15,7 +15,7 @@ namespace CustomConsoleUI.ConsoleUI.Form
 		Columns
 	}
 
-	internal class ChoiceForm : IDisposable
+	public class ChoiceForm : IDisposable
 	{
 		public string PageDescription;
 		private PageManager Page;
