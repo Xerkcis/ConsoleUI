@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CustomConsoleUI.ConsoleUI
+namespace CustomConsoleUI.ConsoleUI.Form
 {
 	public delegate ReturnAction QueryAction<T>(T query);
 

@@ -46,7 +46,7 @@ namespace CustomConsoleUI.ConsoleUI
         public Option(string name)
         {
             this.name = name;
-            this.optionDel = this.Throw;
+            this.optionDel = Throw;
         }
 
         public Option()

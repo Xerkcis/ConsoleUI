@@ -45,8 +45,8 @@
   <ItemGroup>
     <Compile Include="ConsoleUI\Navigation.cs" />
     <Compile Include="ConsoleUI\Option.cs" />
-    <Compile Include="ConsoleUI\ChoiceForm.cs" />
-    <Compile Include="ConsoleUI\SearchForm.cs" />
+    <Compile Include="ConsoleUI\Form\ChoiceForm.cs" />
+    <Compile Include="ConsoleUI\Form\SearchForm.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConsoleUI\PageManager.cs" />

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CustomConsoleUI.ConsoleUI
+namespace CustomConsoleUI.ConsoleUI.Form
 {
 	// For render style
 	internal delegate void RenderDelegate<T>(List<T> lines);

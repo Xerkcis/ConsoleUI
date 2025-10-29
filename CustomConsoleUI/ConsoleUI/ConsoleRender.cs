@@ -42,7 +42,7 @@ namespace CustomConsoleUI.ConsoleUI
 			SetCursorPosition(0, 0);
 
 			for (int i = 0; i < LastRow; i++)
-				Console.WriteLine(new string(' ', Console.LargestWindowWidth-1));
+				Console.WriteLine(new string(' ', Console.LargestWindowWidth - 1));
 		}
 
         // Captures last column position of console cursor
@@ -60,7 +60,7 @@ namespace CustomConsoleUI.ConsoleUI
 			SetCursorPosition(0, LastRow);
 
 			for (int i = LastRow; i < CurrentRow; i++)
-				Console.WriteLine(new string(' ', Console.WindowWidth - 1));
+				Console.WriteLine(new string(' ', Console.LargestWindowWidth - 1));
 		}
 
 		public static void SetCursorPosition(int x, int y)
